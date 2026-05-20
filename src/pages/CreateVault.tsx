@@ -11,7 +11,7 @@ import { EncryptionService } from '../services/encryptionService';
 import { shelbyService } from '../services/shelbyService';
 
 const shelbyClient = new ShelbyClient({
-  network: Network.SHELBYNET,
+  network: Network.TESTNET,
   apiKey: import.meta.env.VITE_SHELBY_API_KEY || import.meta.env.NEXT_PUBLIC_SHELBY_API_KEY || '',
 });
 

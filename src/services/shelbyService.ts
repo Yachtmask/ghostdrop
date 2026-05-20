@@ -31,7 +31,7 @@ export class ShelbyService {
     
     const config = {
       apiKey: apiKey,
-      network: Network.SHELBYNET as any,
+      network: Network.TESTNET as any,
       rpc: {
         apiKey: apiKey
       },
@@ -160,7 +160,7 @@ export class ShelbyService {
    * Generates a Shelby Explorer URL for a blob.
    */
   getExplorerUrl(accountAddress: string, blobName: string) {
-    return getShelbyBlobExplorerUrl("shelbynet", accountAddress, blobName);
+    return getShelbyBlobExplorerUrl("testnet", accountAddress, blobName);
   }
 }
 

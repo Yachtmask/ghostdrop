@@ -267,7 +267,7 @@ async function startServer() {
         for (const blobName of blobsToCheck) {
           if (!blobName) continue;
           
-          const gateway = "https://api.shelbynet.shelby.xyz/shelby";
+          const gateway = "https://api.testnet.shelby.xyz/shelby";
           const url = `${gateway}/v1/blobs/${account.accountAddress}/${blobName}`;
           logs.push(`Checking Shelby metadata: ${url}`);
           const response = await fetch(url);
@@ -323,7 +323,7 @@ async function startServer() {
         for (const blobName of blobsToCheck) {
           if (!blobName) continue;
           
-          const gateway = "https://api.shelbynet.shelby.xyz/shelby";
+          const gateway = "https://api.testnet.shelby.xyz/shelby";
           const url = `${gateway}/v1/blobs/${account.accountAddress}/${blobName}`;
           console.log(`Checking Shelby metadata: ${url}`);
           const response = await fetch(url);
