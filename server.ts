@@ -17,7 +17,7 @@ const WATCHED_ACCOUNTS_FILE = path.join(process.cwd(), "watched_accounts.json");
 
 // Initialize APIs
 const resend = new Resend(process.env.RESEND_API_KEY || "dummy");
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+// Telegram removed - email only notifications
 
 // Initialize Nodemailer for Gmail (if provided)
 const gmailTransporter = (process.env.GMAIL_USER && (process.env.GMAIL_PASS || process.env.GMAIL_PASSWORD || process.env.GMAIL_APP_PASSWORD)) 
@@ -103,36 +103,7 @@ async function sendNotifications(account: WatchedAccount, vault: any, metadataBl
       }
     }
 
-    // Telegram
-    if (recipient.telegram) {
-      if (TELEGRAM_BOT_TOKEN) {
-        try {
-          const tgRes = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              chat_id: recipient.telegram,
-              text: message,
-            })
-          });
-          const tgData = await tgRes.json();
-          if (!tgRes.ok) {
-            console.error(`Telegram API error for ${recipient.telegram}:`, tgData);
-          } else {
-            console.log(`Telegram sent to ${recipient.telegram}`);
-          }
-        } catch (e) {
-          console.error(`Failed to send Telegram to ${recipient.telegram}:`, e);
-        }
-      } else {
-        console.log(`[WATCHDOG] Would send Telegram message to ${recipient.telegram}, but TELEGRAM_BOT_TOKEN is not set.`);
-      }
-    }
-    
-    // Aptos Address (simulated on-chain notification)
-    if (recipient.aptosAddress) {
-      console.log(`[WATCHDOG] Would send on-chain notification to Aptos address ${recipient.aptosAddress}`);
-    }
+
   }
 }
 
@@ -146,10 +117,10 @@ async function startServer() {
     res.json({ status: "ok" });
   });
 
-  // Test endpoint to verify API keys are working
+  // Test endpoint to verify email notification is working
   app.post("/api/test-notifications", async (req, res) => {
-    const { email, telegram } = req.body;
-    const results: any = { email: null, telegram: null };
+    const { email } = req.body;
+    const results: any = { email: null };
     const testMessage = "This is a test message from GhostDrop to verify your notification settings are working correctly.";
 
     if (email) {
@@ -179,31 +150,6 @@ async function startServer() {
         }
       } else {
         results.email = { success: false, error: "No email provider configured (missing GMAIL_USER/PASS or RESEND_API_KEY)" };
-      }
-    }
-
-    if (telegram) {
-      if (TELEGRAM_BOT_TOKEN) {
-        try {
-          const tgRes = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              chat_id: telegram,
-              text: testMessage,
-            })
-          });
-          const tgData = await tgRes.json();
-          if (tgRes.ok) {
-            results.telegram = { success: true, response: tgData };
-          } else {
-            results.telegram = { success: false, error: tgData.description || "Telegram API Error", details: tgData };
-          }
-        } catch (e: any) {
-          results.telegram = { success: false, error: e.message };
-        }
-      } else {
-        results.telegram = { success: false, error: "TELEGRAM_BOT_TOKEN is not configured" };
       }
     }
 
@@ -321,7 +267,7 @@ async function startServer() {
         for (const blobName of blobsToCheck) {
           if (!blobName) continue;
           
-          const gateway = "https://api.testnet.shelby.xyz/shelby";
+          const gateway = "https://api.shelbynet.shelby.xyz/shelby";
           const url = `${gateway}/v1/blobs/${account.accountAddress}/${blobName}`;
           logs.push(`Checking Shelby metadata: ${url}`);
           const response = await fetch(url);
@@ -377,7 +323,7 @@ async function startServer() {
         for (const blobName of blobsToCheck) {
           if (!blobName) continue;
           
-          const gateway = "https://api.testnet.shelby.xyz/shelby";
+          const gateway = "https://api.shelbynet.shelby.xyz/shelby";
           const url = `${gateway}/v1/blobs/${account.accountAddress}/${blobName}`;
           console.log(`Checking Shelby metadata: ${url}`);
           const response = await fetch(url);

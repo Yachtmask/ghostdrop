@@ -84,7 +84,7 @@ const LandingPage = () => {
             },
             {
               title: "Decentralized Persistence",
-              desc: "By leveraging the Shelby protocol and Aptos testnet, your data is distributed across a global network. It is immutable, verifiable, and always ready.",
+              desc: "By leveraging the Shelby protocol on Aptos, your data is distributed across a decentralized global network. It is immutable, verifiable, and always ready.",
               icon: Globe,
               color: "text-purple-400"
             },

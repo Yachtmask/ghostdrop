@@ -11,10 +11,8 @@ import { EncryptionService } from '../services/encryptionService';
 import { shelbyService } from '../services/shelbyService';
 
 const shelbyClient = new ShelbyClient({
-  network: Network.TESTNET,
+  network: Network.SHELBYNET,
   apiKey: import.meta.env.VITE_SHELBY_API_KEY || import.meta.env.NEXT_PUBLIC_SHELBY_API_KEY || '',
-  // @ts-ignore
-  gatewayUrl: "https://api.shelbynet.shelby.xyz/shelby",
 });
 
 interface Recipient {
@@ -227,7 +225,7 @@ const CreateVault = () => {
     <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12 pb-12 sm:pb-20 px-4 sm:px-0 overflow-x-hidden">
       <div className="text-center space-y-2 sm:space-y-4">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Create Dead Man's Switch</h1>
-        <p className="text-slate-400 text-sm sm:text-base">Encrypt your files, set a timer, and let Shelby handle the rest.</p>
+        <p className="text-slate-400 text-sm sm:text-base">Encrypt your files, set a timer, and we'll securely release them if you don't check in.</p>
       </div>
 
       <motion.div
